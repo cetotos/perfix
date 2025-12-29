@@ -1,0 +1,97 @@
+{
+  "geode": "4.10.0",
+  "gd": {
+    "win": "2.2074",
+    "android": "2.2074",
+    "mac": "2.2074",
+    "ios": "2.2074"
+  },
+  "id": "ostistek.perfix",
+  "name": "Perfix",
+  "version": "v1.1.0",
+  "developer": "ostistek",
+  "description": "Comprehensive performance fixes and debug profiler. Disable shaders, particles, trails, glow, pulse effects, shake, high-detail objects - find and fix lag spikes!",
+  "tags": ["performance", "optimization", "utility", "enhancement"],
+  "settings": {
+    "profiler-section": {
+      "name": "Debug Profiler",
+      "type": "title"
+    },
+    "show-profiler": {
+      "name": "Show Profiler Overlay",
+      "description": "Detailed performance display with FPS, frame times, object counts, timing breakdowns, and optimization statistics.",
+      "type": "bool",
+      "default": true
+    },
+    "shader-section": {
+      "name": "Shader Effects",
+      "type": "title"
+    },
+    "disable-shaders": {
+      "name": "Disable ALL Shaders",
+      "description": "Completely disables all shader effects including chromatic aberration, sepia, glitch, blur, pixelate, bulge, shockwave, lens distortion, motion blur, and all other post-processing effects. This is the BIGGEST performance boost for levels with shader triggers.",
+      "type": "bool",
+      "default": false
+    },
+    "visual-effects-section": {
+      "name": "Visual Effects",
+      "type": "title"
+    },
+    "disable-particles": {
+      "name": "Disable Particle Systems",
+      "description": "Disables all particle effects including fire, dust, explosions, sparkles, glitter, and object particles. Significant performance boost for particle-heavy levels.",
+      "type": "bool",
+      "default": false
+    },
+    "reduced-particles": {
+      "name": "Reduced Particles (Half Updates)",
+      "description": "Updates particles every other frame instead of every frame. Less aggressive than fully disabling - keeps visuals but improves performance.",
+      "type": "bool",
+      "default": false
+    },
+    "disable-glow": {
+      "name": "Disable Glow Effects",
+      "description": "Disables glow sprites on objects and player. Reduces GPU overdraw from additive blending. Good for glow-heavy decoration levels.",
+      "type": "bool",
+      "default": false
+    },
+    "disable-trails": {
+      "name": "Disable Ghost Trails",
+      "description": "Disables player ghost trail snapshots. Removes the fading trail behind the player icon.",
+      "type": "bool",
+      "default": false
+    },
+    "trigger-effects-section": {
+      "name": "Trigger Effects",
+      "type": "title"
+    },
+    "disable-pulse": {
+      "name": "Disable Pulse Effects",
+      "description": "Disables color pulse trigger effects. Prevents objects from pulsing colors. Helps in levels with many pulse triggers.",
+      "type": "bool",
+      "default": false
+    },
+    "disable-shake": {
+      "name": "Disable Camera Shake",
+      "description": "Disables all camera shake effects from shake triggers. Also helps reduce motion sickness.",
+      "type": "bool",
+      "default": false
+    },
+    "disable-move-effects": {
+      "name": "Disable Opacity/Move Effects",
+      "description": "Disables opacity fade animations from alpha triggers. May break some level visuals but improves performance.",
+      "type": "bool",
+      "default": false
+    },
+    "object-section": {
+      "name": "Object Optimizations",
+      "type": "title"
+    },
+    "disable-high-detail": {
+      "name": "Disable High-Detail Objects",
+      "description": "Skips activation of objects marked as 'high detail'. Similar to the in-game Low Detail Mode but more aggressive.",
+      "type": "bool",
+      "default": false
+    }
+  }
+}
