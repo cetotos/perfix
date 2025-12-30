@@ -1,6 +1,4 @@
-/**
- * Perfix - Visual effect hooks (particles, trails, objects, triggers)
- */
+// visual effect hooks (particles, trails, objects, triggers)
 
 #include "globals.hpp"
 #include <Geode/modify/GhostTrailEffect.hpp>
@@ -13,9 +11,7 @@
 #include <Geode/modify/LabelGameObject.hpp>
 #endif
 
-// ============================================================================
-// GHOST TRAIL HOOKS
-// ============================================================================
+// ghost trail
 
 class $modify(PerfixGhostTrailEffect, GhostTrailEffect) {
     void trailSnapshot(float dt) {
@@ -27,9 +23,7 @@ class $modify(PerfixGhostTrailEffect, GhostTrailEffect) {
     }
 };
 
-// ============================================================================
-// PARTICLE SYSTEM HOOKS
-// ============================================================================
+// particle system
 
 class $modify(PerfixCCParticleSystem, cocos2d::CCParticleSystem) {
     void update(float dt) {
@@ -61,9 +55,7 @@ class $modify(PerfixCCParticleSystem, cocos2d::CCParticleSystem) {
     }
 };
 
-// ============================================================================
-// GAMEOBJECT HOOKS
-// ============================================================================
+// game object
 
 class $modify(PerfixGameObject, GameObject) {
     void setGlowColor(cocos2d::ccColor3B const& color) {
@@ -86,9 +78,7 @@ class $modify(PerfixGameObject, GameObject) {
     }
 };
 
-// ============================================================================
-// GJEFFECTMANAGER HOOKS
-// ============================================================================
+// effect manager
 
 class $modify(PerfixGJEffectManager, GJEffectManager) {
     void updatePulseEffects(float dt) {
@@ -99,9 +89,7 @@ class $modify(PerfixGJEffectManager, GJEffectManager) {
     }
 };
 
-// ============================================================================
-// EFFECTGAMEOBJECT HOOKS - Trigger tracking
-// ============================================================================
+// trigger tracking
 
 class $modify(PerfixEffectGameObject, EffectGameObject) {
     void triggerActivated(float xPos) {
@@ -129,9 +117,7 @@ class $modify(PerfixEffectGameObject, EffectGameObject) {
     }
 };
 
-// ============================================================================
-// HARDSTREAK HOOKS - Wave trail
-// ============================================================================
+// wave trail
 
 class $modify(PerfixHardStreak, HardStreak) {
     void updateStroke(float dt) {
@@ -140,9 +126,7 @@ class $modify(PerfixHardStreak, HardStreak) {
     }
 };
 
-// ============================================================================
-// LABELGAMEOBJECT HOOKS (Android only)
-// ============================================================================
+// label updates (android only, inlined on windows)
 
 #ifdef GEODE_IS_ANDROID
 class $modify(PerfixLabelGameObject, LabelGameObject) {

@@ -1,24 +1,16 @@
 #pragma once
 
-/**
- * Perfix v2.2 - Global state, profiler, and settings
- */
-
 #include <Geode/Geode.hpp>
 #include <chrono>
 #include <deque>
 
 using namespace geode::prelude;
 
-// ============================================================================
-// ULTRA PROFILER STATE - TRACKS EVERYTHING
-// ============================================================================
-
+// profiler state
 struct UltraProfiler {
-    // === FRAME TIMING ===
     bool enabled = false;
 
-    // Wall clock frame timing (actual time between frames)
+    // frame timing
     double wallFrameTotal = 0.0;
     double wallFrameMax = 0.0;
     double wallFrameMin = 999.0;
@@ -26,12 +18,11 @@ struct UltraProfiler {
     std::chrono::steady_clock::time_point lastFrameTs{};
     bool hasLastFrameTs = false;
 
-    // Simulation frame timing (game dt)
     double simFrameTotal = 0.0;
     double simFrameMax = 0.0;
     int simFrameCount = 0;
 
-    // === COMPONENT TIMINGS (ms) ===
+    // component timings in ms
     double updateMs = 0.0;
     double shaderVisitMs = 0.0;
     double shaderCalcMs = 0.0;
@@ -49,7 +40,7 @@ struct UltraProfiler {
     double audioMs = 0.0;
     double postUpdateMs = 0.0;
 
-    // === OBJECT COUNTS ===
+    // object counts
     int totalObjects = 0;
     int visibleObjects1 = 0;
     int visibleObjects2 = 0;
@@ -59,13 +50,13 @@ struct UltraProfiler {
     int solidCollisionObjs = 0;
     int hazardCollisionObjs = 0;
 
-    // === PARTICLE TRACKING ===
+    // particles
     int particleSystemCount = 0;
     int particlesSkipped = 0;
     int particleUpdateCalls = 0;
     int particleAddCalls = 0;
 
-    // === EFFECT TRACKING ===
+    // effects
     int pulseEffectsActive = 0;
     int opacityEffectsActive = 0;
     int moveActionsActive = 0;
@@ -73,52 +64,47 @@ struct UltraProfiler {
     int colorActionsActive = 0;
     int activeGradients = 0;
 
-    // === VISUAL OPTIMIZATIONS ===
+    // optimization counters
     int glowsDisabled = 0;
     int highDetailSkipped = 0;
     int trailSnapshotsSkipped = 0;
     int shakesSkipped = 0;
 
-    // === TRIGGER TRACKING ===
+    // triggers
     int triggersActivated = 0;
     int pulseTriggers = 0;
     int shakeTriggers = 0;
     int moveTriggers = 0;
     int spawnTriggers = 0;
 
-    // === BATCH NODE / DRAW CALL ESTIMATION ===
+    // rendering
     int batchNodeCount = 0;
     int estimatedDrawCalls = 0;
     int textureBindEstimate = 0;
-
-    // === SHADER TRACKING ===
     bool shadersActive = false;
     int shaderEffectsActive = 0;
 
-    // === SECTION/CULLING SYSTEM ===
+    // sections
     int sectionsChecked = 0;
     int leftSection = 0;
     int rightSection = 0;
     int topSection = 0;
     int bottomSection = 0;
 
-    // === FRAME HISTORY (for spike detection) ===
+    // frame history for spike detection
     std::deque<double> frameHistory;
     int frameSpikes = 0;
     int frameSevereSpikes = 0;
 
-    // === AUDIO TRACKING ===
+    // audio
     int sfxTriggersProcessed = 0;
     int audioTriggersActive = 0;
 
     void reset() {
-        wallFrameTotal = 0.0;
-        wallFrameMax = 0.0;
+        wallFrameTotal = wallFrameMax = 0.0;
         wallFrameMin = 999.0;
-        wallFrameCount = 0;
-        simFrameTotal = 0.0;
-        simFrameMax = 0.0;
-        simFrameCount = 0;
+        wallFrameCount = simFrameCount = 0;
+        simFrameTotal = simFrameMax = 0.0;
 
         updateMs = shaderVisitMs = shaderCalcMs = particleMs = 0.0;
         effectMs = pulseEffectMs = opacityEffectMs = visibilityMs = 0.0;
@@ -131,17 +117,13 @@ struct UltraProfiler {
         moveTriggers = spawnTriggers = 0;
         particleUpdateCalls = particleAddCalls = 0;
         sfxTriggersProcessed = 0;
-
         frameSpikes = frameSevereSpikes = 0;
     }
 };
 
 extern UltraProfiler g_prof;
 
-// ============================================================================
-// SETTINGS CACHE
-// ============================================================================
-
+// cached settings
 struct SettingsCache {
     bool showProfiler = true;
     bool showDetailedProfiler = false;
@@ -154,7 +136,6 @@ struct SettingsCache {
     bool disableHighDetail = false;
     bool disableMoveEffects = false;
     bool reducedParticles = false;
-    // Experimental fixes
     bool expThrottleActions = false;
     bool expSkipAreaEffects = false;
     bool expThrottleTransforms = false;
@@ -163,7 +144,6 @@ struct SettingsCache {
     bool expAggressiveCulling = false;
     bool expSkipFollowActions = false;
     bool expReduceColorUpdates = false;
-    // NEW experimental fixes
     bool expThrottleGradients = false;
     bool expReduceWaveTrail = false;
     bool expThrottleAdvancedFollow = false;
@@ -176,10 +156,7 @@ struct SettingsCache {
 
 extern SettingsCache g_settings;
 
-// ============================================================================
-// THROTTLE STATE
-// ============================================================================
-
+// throttle state
 struct ThrottleState {
     int frameCount = 0;
     int lastSpawnFrame = 0;
@@ -187,13 +164,9 @@ struct ThrottleState {
 
 extern ThrottleState g_throttle;
 
-// ============================================================================
-// HELPER FUNCTIONS & MACROS
-// ============================================================================
-
 void refreshSettings();
 
-// Timing helper macros
+// timing macros
 #define PROFILE_START auto _prof_start = std::chrono::steady_clock::now()
 #define PROFILE_END(var) var = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - _prof_start).count()
 #define PROFILE_ADD(var) var += std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - _prof_start).count()

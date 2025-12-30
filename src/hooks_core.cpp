@@ -1,15 +1,9 @@
-/**
- * Perfix - Core gameplay hooks (GJBaseGameLayer, PlayLayer, ShaderLayer)
- */
+// core gameplay hooks
 
 #include "globals.hpp"
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/ShaderLayer.hpp>
-
-// ============================================================================
-// GJBASEGAMELAYER HOOKS
-// ============================================================================
 
 class $modify(PerfixBaseGameLayer, GJBaseGameLayer) {
     struct Fields {
@@ -22,6 +16,7 @@ class $modify(PerfixBaseGameLayer, GJBaseGameLayer) {
     void update(float dt) {
         g_throttle.frameCount++;
 
+        // refresh settings periodically
         m_fields->settingsRefreshAccum += dt;
         if (m_fields->settingsRefreshAccum >= 0.25f || !g_settings.cacheValid) {
             refreshSettings();
@@ -40,7 +35,7 @@ class $modify(PerfixBaseGameLayer, GJBaseGameLayer) {
         GJBaseGameLayer::update(dt);
         PROFILE_END(g_prof.updateMs);
 
-        // Gather stats
+        // gather stats
         g_prof.totalObjects = m_objects ? m_objects->count() : 0;
         g_prof.visibleObjects1 = m_visibleObjectsCount;
         g_prof.visibleObjects2 = m_visibleObjects2Count;
@@ -95,22 +90,26 @@ class $modify(PerfixBaseGameLayer, GJBaseGameLayer) {
 
         char buf[2048];
         snprintf(buf, sizeof(buf),
-            "=== PERFIX ULTRA PROFILER ===%s\n"
+            "Perfix%s\n"
             "FPS: %.0f (sim %.0f) | Grade: %c\n"
             "Frame: %.2fms (min %.1f / max %.1f)\n"
             "Spikes: %d (>20ms) | %d (>33ms)\n"
-            "------- OBJECTS -------\n"
+            "\n"
+            "Objects\n"
             "Total: %d | Visible: %d/%d\n"
             "Sections: [%d-%d]x[%d-%d]\n"
-            "------- TIMINGS -------\n"
+            "\n"
+            "Timings\n"
             "Update: %.2fms | Shader: %.2fms\n"
             "Particle: %.2fms | Effects: %.2fms\n"
             "Visibility: %.2fms | Collision: %.2fms\n"
             "Camera: %.2fms | Actions: %.2fms\n"
-            "------- RENDERING -------\n"
+            "\n"
+            "Rendering\n"
             "BatchNodes: %d | DrawCalls: ~%d\n"
             "Gradients: %d | Particles: %d\n"
-            "------- OPTIMIZATIONS -------\n"
+            "\n"
+            "Optimizations\n"
             "Skip: P%d G%d H%d T%d\n"
             "Triggers: %d (S%d P%d M%d)",
             status.c_str(),
@@ -132,7 +131,7 @@ class $modify(PerfixBaseGameLayer, GJBaseGameLayer) {
         m_fields->profilerLabel->setString(buf);
         m_fields->profilerLabel->setVisible(true);
 
-        // Detailed panel
+        // detailed panel on right side
         if (g_settings.showDetailedProfiler) {
             if (!m_fields->detailedLabel) {
                 auto* label = CCLabelBMFont::create("", "bigFont.fnt");
@@ -152,7 +151,7 @@ class $modify(PerfixBaseGameLayer, GJBaseGameLayer) {
 
             char detailBuf[1024];
             snprintf(detailBuf, sizeof(detailBuf),
-                "=== BREAKDOWN ===\n"
+                "Breakdown\n"
                 "Shader: %.1f%%\n"
                 "Effects: %.1f%%\n"
                 "  pulse: %.2fms\n"
@@ -163,7 +162,8 @@ class $modify(PerfixBaseGameLayer, GJBaseGameLayer) {
                 "  transform: %.2fms\n"
                 "  area: %.2fms\n"
                 "Particles: %.1f%%\n"
-                "Other:\n"
+                "\n"
+                "Other\n"
                 "  visibility: %.2fms\n"
                 "  collision: %.2fms\n"
                 "  camera: %.2fms",
@@ -265,10 +265,6 @@ class $modify(PerfixBaseGameLayer, GJBaseGameLayer) {
     }
 };
 
-// ============================================================================
-// PLAYLAYER HOOKS
-// ============================================================================
-
 class $modify(PerfixPlayLayer, PlayLayer) {
     void shakeCamera(float duration, float strength, float interval) {
         if (g_settings.disableShake) {
@@ -304,10 +300,6 @@ class $modify(PerfixPlayLayer, PlayLayer) {
         PROFILE_ADD(g_prof.cameraMs);
     }
 };
-
-// ============================================================================
-// SHADERLAYER HOOKS
-// ============================================================================
 
 class $modify(PerfixShaderLayer, ShaderLayer) {
     void visit() {
