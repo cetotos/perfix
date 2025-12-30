@@ -11,7 +11,7 @@
   "version": "v2.2.0",
   "developer": "ostistek",
   "description": "ULTRA Performance Profiler & Optimizer. Comprehensive profiling of shaders, particles, effects, collisions, visibility, camera, actions, triggers, batch nodes, draw calls. Find EXACTLY what's causing lag!",
-  "tags": ["performance", "optimization", "utility", "enhancement", "debug", "profiler"],
+  "tags": ["performance", "utility", "enhancement"],
   "settings": {
     "profiler-section": {
       "name": "ULTRA Profiler",
