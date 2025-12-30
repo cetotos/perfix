@@ -8,20 +8,26 @@
   },
   "id": "ostistek.perfix",
   "name": "Perfix",
-  "version": "v1.1.0",
+  "version": "v2.2.0",
   "developer": "ostistek",
-  "description": "Comprehensive performance fixes and debug profiler. Disable shaders, particles, trails, glow, pulse effects, shake, high-detail objects - find and fix lag spikes!",
-  "tags": ["performance", "optimization", "utility", "enhancement"],
+  "description": "ULTRA Performance Profiler & Optimizer. Comprehensive profiling of shaders, particles, effects, collisions, visibility, camera, actions, triggers, batch nodes, draw calls. Find EXACTLY what's causing lag!",
+  "tags": ["performance", "optimization", "utility", "enhancement", "debug", "profiler"],
   "settings": {
     "profiler-section": {
-      "name": "Debug Profiler",
+      "name": "ULTRA Profiler",
       "type": "title"
     },
     "show-profiler": {
       "name": "Show Profiler Overlay",
-      "description": "Detailed performance display with FPS, frame times, object counts, timing breakdowns, and optimization statistics.",
+      "description": "Main profiler display showing FPS, frame times, object counts, component timings, batch nodes, draw calls, and optimization stats.",
       "type": "bool",
       "default": true
+    },
+    "show-detailed-profiler": {
+      "name": "Show Detailed Breakdown",
+      "description": "Shows additional detailed breakdown panel on the right side with percentage breakdowns, individual component timings, and deep profiling data.",
+      "type": "bool",
+      "default": false
     },
     "shader-section": {
       "name": "Shader Effects",
@@ -66,8 +72,8 @@
       "type": "title"
     },
     "disable-pulse": {
-      "name": "Disable Pulse Effects",
-      "description": "Disables color pulse trigger effects. Prevents objects from pulsing colors. Helps in levels with many pulse triggers.",
+      "name": "Disable Pulse Triggers",
+      "description": "Blocks NEW pulse triggers from activating. Existing pulses will complete normally to avoid color bugs. Helps in levels with many pulse triggers.",
       "type": "bool",
       "default": false
     },
@@ -78,8 +84,8 @@
       "default": false
     },
     "disable-move-effects": {
-      "name": "Disable Opacity/Move Effects",
-      "description": "Disables opacity fade animations from alpha triggers. May break some level visuals but improves performance.",
+      "name": "Disable Opacity Effects (Android Only)",
+      "description": "Disables opacity fade animations from alpha triggers. NOTE: Only works on Android due to Windows function inlining.",
       "type": "bool",
       "default": false
     },
@@ -90,6 +96,100 @@
     "disable-high-detail": {
       "name": "Disable High-Detail Objects",
       "description": "Skips activation of objects marked as 'high detail'. Similar to the in-game Low Detail Mode but more aggressive.",
+      "type": "bool",
+      "default": false
+    },
+    "experimental-section": {
+      "name": "EXPERIMENTAL Fixes",
+      "type": "title"
+    },
+    "exp-throttle-actions": {
+      "name": "[EXP] Throttle Move/Rotate Actions",
+      "description": "EXPERIMENTAL: Processes move and rotation triggers every other frame instead of every frame. Can significantly reduce lag in levels with many moving objects but may cause slight visual stuttering.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-skip-area-effects": {
+      "name": "[EXP] Skip Area Effects",
+      "description": "EXPERIMENTAL: Completely skips area effect processing (area fade, area tint, etc). Major performance boost in levels using area triggers but breaks those effects.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-throttle-transforms": {
+      "name": "[EXP] Throttle Transform Updates",
+      "description": "EXPERIMENTAL: Only processes transform actions on visible frames. Can reduce CPU load but may cause objects to lag behind.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-throttle-spawns": {
+      "name": "[EXP] Throttle Spawn Triggers",
+      "description": "EXPERIMENTAL: Limits spawn trigger rate by adding a minimum delay between spawns. Helps with spawn loop lag but may break some level mechanics.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-reduce-collision-checks": {
+      "name": "[EXP] Reduce Collision Checks",
+      "description": "EXPERIMENTAL: Checks collisions every other frame for non-hazard objects. Reduces CPU load but may cause slight collision detection delays.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-aggressive-culling": {
+      "name": "[EXP] Aggressive Visibility Culling",
+      "description": "EXPERIMENTAL: Uses tighter section bounds for visibility, culling more off-screen objects. May cause pop-in at screen edges.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-skip-follow-actions": {
+      "name": "[EXP] Skip Follow Actions",
+      "description": "EXPERIMENTAL: Disables follow trigger processing entirely. Breaks follow triggers but significantly reduces CPU in follow-heavy levels.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-reduce-color-updates": {
+      "name": "[EXP] Reduce Color Updates (Android Only)",
+      "description": "EXPERIMENTAL: Updates color channels at half rate. NOTE: Only works on Android due to Windows function inlining. May cause slight color animation lag.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-throttle-gradients": {
+      "name": "[EXP] Throttle Gradient Layers",
+      "description": "EXPERIMENTAL: Updates gradient layers every 3rd frame instead of every frame. Reduces GPU color blending overhead in gradient-heavy levels.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-reduce-wave-trail": {
+      "name": "[EXP] Reduce Wave Trail Quality",
+      "description": "EXPERIMENTAL: Reduces wave trail (HardStreak) update frequency. Lowers vertex buffer updates for smoother wave gameplay at cost of trail quality.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-throttle-advanced-follow": {
+      "name": "[EXP] Throttle Advanced Follow",
+      "description": "EXPERIMENTAL: Processes advanced follow triggers every other frame. Reduces complex physics calculations in modern 2.2 levels.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-throttle-dynamic-objects": {
+      "name": "[EXP] Throttle Dynamic Objects",
+      "description": "EXPERIMENTAL: Throttles dynamic move/rotate commands processing. Helps with levels that have many dynamically moving objects.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-throttle-player-follow": {
+      "name": "[EXP] Throttle Player Follow",
+      "description": "EXPERIMENTAL: Reduces player follow trigger update rate. Helps in levels with many follow-player triggers.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-limit-enter-effects": {
+      "name": "[EXP] Limit Enter Effects",
+      "description": "EXPERIMENTAL: Limits concurrent enter effect transitions. Reduces lag when many objects enter screen at once.",
+      "type": "bool",
+      "default": false
+    },
+    "exp-throttle-labels": {
+      "name": "[EXP] Throttle Label Updates (Android Only)",
+      "description": "EXPERIMENTAL: Updates counter/timer labels every 5th frame. Reduces text rendering overhead in label-heavy levels. NOTE: Only works on Android due to Windows function inlining.",
       "type": "bool",
       "default": false
     }
