@@ -42,6 +42,7 @@
 # Ignore build folders
 **/build
 # Ignore platform specific build folders
+build_log.txt
 build-*/
 
 # Workspace files are user-specific
@@ -62,3 +63,6 @@ build-*/
 # CLion
 .idea/
 /cmake-build-*/
+
+
+invert.py
